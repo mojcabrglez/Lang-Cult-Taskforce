@@ -1,0 +1,2 @@
+# SloKuljko
+Slovenian Culture Benchmark
