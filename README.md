@@ -8,15 +8,16 @@ This repo contains scripts for generating model answers to questions in the samp
 
 ```
 .
-├── local_llm_multilang.py         # Generate model answers
-├── Laaj_scoring.py                # LLM-as-a-judge scoring
-├── laaj_correlations.py           # LLM-human correlation analysis
-├── lang_prompts.json              # Per-language prompt templates
-├── LAAJ_updated_criteria_tabular.tsv  # Evaluation criteria
+├── common_data/
+│   ├── lang_prompts.json                 # Per-language prompt templates
+│   ├── LAAJ_updated_criteria_tabular.tsv # Evaluation criteria
+├── local_llm_multilang.py                # Generate model answers
+├── LaaJ_scoring.py                       # LLM-as-a-judge scoring
+├── laaj_correlations.py                  # LLM-human correlation analysis
 ├── .data/
-│   ├── samples/                   # Per-language datasets (unversioned)
-│   └── laaj_scores/               # Scoring outputs
-└── results/                       # Correlation results
+│   ├── samples/                          # Per-language datasets (unversioned)
+│   └── laaj_scores/                      # Scoring outputs
+└── results/                              # Correlation results
 ```
 
 ---
