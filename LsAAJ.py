@@ -1,13 +1,12 @@
 import re
 import pandas as pd
-#from pydantic import BaseModel, ValidationError
 from ollama import Client
-from typing import Optional
 import ast
-from sklearn.metrics import accuracy_score
 
 client = Client(host='http://llm.ijs.si:11435')
+eval_model = 'gemma3:4b-it-qat'
 
+lang= 'Slovenian'
 answers_path = r"C:\Users\mobrg\Documents\ProG\PycharmProjects\SloKuljko\candidate_answers_oneperrow.tsv"
 candidate_ans = pd.read_csv(answers_path,sep='\t')
 
@@ -55,13 +54,12 @@ criteria_df = pd.read_csv('LAAJ_criteria_tabular.tsv',sep='\t',encoding='UTF-8',
 criteria = criteria_df.to_dict(orient='index')
 #only_questions = questions['Question'].tolist()
 
-system_prompt = ("You are an expert at evaluating answers about Slovenian cultural knowledge."
-                 "Your evaluation is based on the provided reference answer and accounts for the context of Slovenian language and culture.")
+#currently only for Slovenian (in English)
+system_prompt = (f"You are fluent in {lang} and are an expert at evaluating answers about {lang} cultural knowledge."
+                 f"Your evaluation is based on the provided reference answer and accounts for the context of {lang} language and culture.")
 
 start_of_prompt = 'Evaluate the criterion of **{}** of the <hypothesis> answer to the <question> based on the provided <reference> answer.'
 end_of_prompt = "\nProvide only the numerical score, without thinking or explaining. Score: "
-eval_model = 'gemma3:4b-it-qat'
-
 
 
 
@@ -96,13 +94,13 @@ def evaluate_row(row_df):
         ).message.content
 
         row_df[crit['name']] = response.strip().strip('</score>')
-        row_df[f'prompt_{crit["name"]}'] = prompt
     return row_df
 
 
 candidate_ans_evald = candidate_ans.apply(evaluate_row,axis=1)
 
+safe_model = eval_model.replace(':', '-')
+candidate_ans_evald.to_csv(f'LAAJ_{safe_model}_{lang}.tsv', sep='\t')
 
-candidate_ans_evald.to_csv(f'LAAJ_{eval_model}_scores_3.tsv',sep='\t')
 
 
