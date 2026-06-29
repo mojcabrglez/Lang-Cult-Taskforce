@@ -31,14 +31,14 @@ Generates model answers for per-language/culture/region datasets.
 
 - **Input:** Dataset files in `.data/samples/`, following the naming convention:
   `Lang&Cult_<Language>_dataset.tsv` (e.g., `Lang&Cult_Slovenian_dataset.tsv`)
-- **Prompts:** Models are prompted in each respective language using templates from `lang_prompts.json`
+- **Prompts:** Models are prompted in each respective language using templates from `common_data/lang_prompts.json`
 
 ---
 
 ### 2. LLM-as-a-Judge Scoring
-**Script:** `Laaj_scoring.py`
+**Script:** `LaaJ_scoring.py`
 
-Scores model outputs using evaluation criteria from `LAAJ_updated_criteria_tabular.tsv`.
+Scores model outputs using evaluation criteria from `common_data/LAAJ_updated_criteria_tabular.tsv`.
 
 - **Output:** `.data/laaj_scores/LAAJ_{safe_model}_{lang}.tsv`
 
