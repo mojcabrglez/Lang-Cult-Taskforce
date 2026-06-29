@@ -4,9 +4,9 @@ import numpy as np
 from scipy import stats
 
 eval_model = 'gemma3:4b-it-qat'
-
+lang= 'Slovenian'
 safe_model = eval_model.replace(':', '-')
-model_scores = f'LAAJ_{safe_model}_scores_2.tsv'
+model_scores = f'LAAJ_{safe_model}_scores_{lang}.tsv'
 
 manual_scores = r"C:\Users\mobrg\Documents\ProG\PycharmProjects\SloKuljko\manual_evaluation_evald.xlsx"
 
