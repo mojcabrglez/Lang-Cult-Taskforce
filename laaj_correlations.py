@@ -110,7 +110,7 @@ for laaj_score in os.listdir(laaj_scores_path):
         # should have parallel manual scores, named by this convention:
         manual_scores = f".data/manual_evals/manual_evaluation_{lang}.xlsx"
 
-        criteria_df = pd.read_csv('LAAJ_criteria_tabular.tsv', sep='\t', encoding='UTF-8')
+        criteria_df = pd.read_csv('common_data/LAAJ_criteria_tabular.tsv', sep='\t', encoding='UTF-8')
         criteria = criteria_df.to_dict(orient='index')
 
         # --- Run it ---
