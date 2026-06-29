@@ -3,7 +3,7 @@ import pandas as pd
 from ollama import Client
 import json
 
-with open(".data/lang_prompts.json", "r", encoding="utf-8") as f:
+with open("lang_prompts.json", "r", encoding="utf-8") as f:
     SYSTEM_PROMPTS = json.load(f)
 
 client = Client(host='http://llm.ijs.si:11435')

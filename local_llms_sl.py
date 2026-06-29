@@ -45,4 +45,4 @@ annotation_df["Accuracy"] = ""
 annotation_df["Completeness"] = ""
 annotation_df["Notes"] = ""
 
-annotation_df.to_excel("manual_evaluation.xlsx", index=False)
+annotation_df.to_excel(".data/manual_evaluation.xlsx", index=False)
