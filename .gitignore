@@ -1,5 +1,5 @@
 /.data/samples/
-/.data/for_eval
+/.data/for_eval/
 /.data/Slokuljko_questions_april.tsv
-/.data/model_ans
-/.data/manual_evals
+/.data/model_ans/
+/.data/manual_evals/
