@@ -1,26 +1,26 @@
 import re
+import os
 import pandas as pd
 import numpy as np
 from scipy import stats
 
 eval_model = 'gemma3:4b-it-qat'
-lang= 'Slovenian'
 safe_model = eval_model.replace(':', '-')
-model_scores = f'LAAJ_{safe_model}_scores_{lang}.tsv'
 
-manual_scores = r"C:\Users\mobrg\Documents\ProG\PycharmProjects\SloKuljko\manual_evaluation_evald.xlsx"
-
-criteria_df = pd.read_csv('LAAJ_criteria_tabular.tsv',sep='\t',encoding='UTF-8')
-
-criteria = criteria_df.to_dict(orient='index')
+laaj_scores_path = '.data/laaj_scores/'
 
 def load_and_merge(model_scores, manual_scores):
     """
     Load both files and merge on a shared ID column.
     Assumes both CSVs have columns like: id, Readability, Informativeness, Faithfulness
+
+    ## criteria in LLM prompt: Readability and Linguistic acceptability, Adequacy, General quality
     """
     model_df = pd.read_csv(model_scores,sep='\t')
     manual_df = pd.read_excel(manual_scores)
+    if 'Fluency' in manual_df.keys():
+        manual_df.rename(columns={'Fluency':"Readability and Linguistic acceptability", 'General_Quality':'General quality'}, inplace=True)
+
     model_df.columns = model_df.columns.str.strip()
     manual_df.columns = manual_df.columns.str.strip()
 
@@ -100,15 +100,32 @@ def exact_and_adjacent_agreement(merged_df, criteria_names):
 
     return pd.DataFrame(rows)
 
-# --- Run it ---
-criteria_names = [criteria[m]['name'] for m in criteria]  # from your parsing script
 
-merged = load_and_merge(model_scores, manual_scores)
+## criteria in LLM prompt: Readability and Linguistic acceptability, Adequacy, General quality
 
-corr_df = correlations_per_criterion(merged, criteria_names)
-agreement_df = exact_and_adjacent_agreement(merged, criteria_names)
+for laaj_score in os.listdir(laaj_scores_path):
+    if f"LAAJ_{safe_model}_scores_" in laaj_score:
+        lang = laaj_score.split('_')[-2]
+        model_scores = pd.read_excel(os.path.join(laaj_scores_path, laaj_score))
+        # should have parallel manual scores, named by this convention:
+        manual_scores = f".data/manual_evals/manual_evaluation_{lang}.xlsx"
 
-summary = pd.merge(corr_df, agreement_df, on='criterion')
-print(summary.to_string(index=False))
+        criteria_df = pd.read_csv('LAAJ_criteria_tabular.tsv', sep='\t', encoding='UTF-8')
+        criteria = criteria_df.to_dict(orient='index')
 
-summary.to_csv('LAAJ-human_correlation_results.csv', index=False)
+        # --- Run it ---
+        criteria_names = [criteria[m]['name'] for m in criteria]  # from your parsing script
+
+        merged = load_and_merge(model_scores, manual_scores)
+
+        corr_df = correlations_per_criterion(merged, criteria_names)
+        agreement_df = exact_and_adjacent_agreement(merged, criteria_names)
+
+        summary = pd.merge(corr_df, agreement_df, on='criterion')
+        print(f'Correlation for scores on {lang} data:')
+        print(summary.to_string(index=False))
+
+        summary.to_csv(f'results/LAAJ-human_correlation_{lang}.tsv', index=False,sep='\t')
+        print(f'Wrote correlation statistics to results/LAAJ-human_correlation_{lang}.tsv')
+
+
