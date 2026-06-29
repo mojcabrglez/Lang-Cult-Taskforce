@@ -1,0 +1,23 @@
+Readability and Linguistic acceptability: measures the quality of both inter- and intra-sentences, are they grammatically correct and naturally written, with clear meanings and good context-relatedness and logic. This category primarily describes whether the form of the text makes it understandable, covering grammaticality, fluency and coherence.
+1: The text is not grammatically correct in the target language. The text contains excessive use of English words or full English sentences.
+2: The text contains some English words or phrases or literally translates English phrases or proverbs to the target language in a manner that is not idiomatic. The text contains too many repetitions and grammatical mistakes to be understandable.
+3: I can make a reasonable estimate of the meaning of the target text, but some parts are unclear or not fluent. There are some repetitions that make the text hard to read or some components are too vague to understand what is meant. There are grammatical mistakes or the text is excessively verbose.
+4: The text is mostly understandable, but the style or phrasing is a bit unnatural. There might be some minor grammatical mistakes in target language, but they do not hamper comprehension. The text is slightly too verbose.
+5: The text is perfectly fluent, clear, understandable and contains no grammatical errors.
+
+
+Adequacy: is a combination of faithfulness, informativeness, completeness and adequacy. It measures the relevance, truthfulness, correctness and cultural appropriateness of the response.
+1: The answer contains barely any relevant and useful information to address the question. The information that is presented is wrong or describes a different cultural context, making it misrepresentation of the target culture.
+2: The answer contains some correct, culture-appropriate and relevant information, but it is insufficient to answer the question or is not specific enough to make it match the nuance of the target culture. The overlap with the reference is lacking an essential component without providing a meaningful alternative.
+3: Some of the information is correct, some of it is wrong, but it is hard to tell whether it is sufficient to address the question. Some relevant contextualization, references to key concepts or named entities are missing or wrong.
+4: Most of the information provided in the answer is correct, although minor details should be corrected, minimally adjusted, added or specified. The answer contains most of the relevant information and exhibits considerable overlap with the reference answer. Some information may overlook regional nuances within the target culture. The new answer may compensate for the lack of overlap with alternative relevant information.
+5: All of the required information is present, truthful and fits the cultural context, including nuances, contextualization and background information. There is a considerable overlap with the reference answer and where the new answer diverges from the reference, it provides other information that is also pertinent to the question. The new answer is interesting and provides as much or more information than the reference.
+
+
+General quality: provides an overall evaluation of the target answer. This should encompass all evaluation aspects, such as adequacy, completeness, and readability.
+1: The answer is not acceptable because it is not understandable or because it does not provide an adequate answer to the question. The understanding of the cultural concept is wrong, and there are almost no redeemable aspects to the answer.
+2: The answer is not acceptable because it is very hard to understand or because it does not contain sufficient correct information to address the question. There may be misrepresentation or overgeneralization of the target culture.
+3: This answer is a borderline case. There are some redeemable components in the answer, but there are also some mistakes or misrepresentations of the target culture. The answer somewhat addresses the question, but is clearly less complete than the reference answer.
+4: The answer is rather adequate and addresses the essence of the question. The information provided in the answer is a correct representation of the target culture, and there is enough relevant information. Some minimal nuances may be missing or there might be small grammatical mistakes.
+5: The answer completely addresses the question, containing sufficient correct information, background information, and contextual nuance. All the information in the reference answer is also present in the new answer, or it provides an alternative perspective on that still fits the cultural context.
+
