@@ -17,7 +17,9 @@ sample_dir = '.data/samples'
 for filename in os.listdir(sample_dir):
     if filename.endswith(".tsv"):
         lang = filename.split('_')[1]
-        #if lang == "Slovenian":
+        if lang != "Croatian":
+            continue
+
         questions = pd.read_csv(os.path.join(sample_dir,filename),sep='\t')
 
         only_questions = questions['Question'].tolist()

@@ -7,6 +7,12 @@ import ast
 client = Client(host='http://llm.ijs.si:11435')
 eval_model = 'gemma3:4b-it-qat'
 
+OUTPUT_COLUMNS = {
+    "Readability and Linguistic acceptability": "Fluency",
+    "Adequacy": "Adequacy",
+    "General quality": "General_Quality",
+}
+
 def parse_criteria_from_prose(criteria_path="LAAJ_criteria.txt"):
     """
     One-time utility: parses unstructured criteria descriptions from a .txt file
@@ -80,12 +86,13 @@ def evaluate_row(row_df):
                 {'role': 'user', 'content': prompt}
             ]).message.content
 
-        row_df[crit['name']] = response.strip().strip('</score>')
+        output_column = OUTPUT_COLUMNS[crit["name"]]
+        row_df[output_column] = response.strip().strip("</score>")
     return row_df
 
 
 #read direclty from new file (if not yet in tabular, rumn parse_criteria_from_prose(criteria_path="LAAJ_criteria.txt")
-criteria_df = pd.read_csv('LAAJ_updated_criteria_tabular.tsv',sep='\t',encoding='UTF-8',index_col=0)
+criteria_df = pd.read_csv('common_data/LAAJ_criteria_tabular_updated.tsv', sep='\t', encoding='UTF-8', index_col=0)
 criteria = criteria_df.to_dict(orient='index')
 
 # model answers to evaluate
@@ -93,7 +100,7 @@ answers_path = r".data/for_eval/"
 
 for xlsx_file in os.listdir(answers_path):
     if xlsx_file.endswith(".xlsx"):
-        lang = xlsx_file.split('_')[1]
+        lang = xlsx_file.split('_')[3].strip(".xlsx")
         candidate_ans = pd.read_excel(os.path.join(answers_path,xlsx_file))
 
         #currently only in English
@@ -107,7 +114,7 @@ for xlsx_file in os.listdir(answers_path):
         candidate_ans_evald = candidate_ans.apply(evaluate_row,axis=1)
 
         safe_model = eval_model.replace(':', '-')
-        candidate_ans_evald.to_csv(f'.data/laaj_scores/LAAJ_{safe_model}_{lang}.tsv', sep='\t')
+        candidate_ans_evald.to_csv(f'.data/laaj_scores/LAAJ_{safe_model}_{lang}.tsv', sep='\t',index=False)
 
 
 
