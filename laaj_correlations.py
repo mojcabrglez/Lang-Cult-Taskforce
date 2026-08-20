@@ -582,7 +582,7 @@ for laaj_score in os.listdir(laaj_scores_path):
 if all_summaries:
     final_summary = pd.concat(all_summaries, ignore_index=True)
 
-    output_path = "results/LAAJ_Agreement_Correlation_All.tsv"
+    output_path = "results/LAAJ_Agreement_Correlation_short.tsv"
     final_summary.to_csv(output_path, index=False, sep="\t",
                          columns=['language',
                                   'comparison',
