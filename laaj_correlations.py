@@ -582,8 +582,16 @@ for laaj_score in os.listdir(laaj_scores_path):
 if all_summaries:
     final_summary = pd.concat(all_summaries, ignore_index=True)
 
-    output_path = "results/LAAJ_pairwise_agreement_and_correlation_all_languages.tsv"
-    final_summary.to_csv(output_path, index=False, sep="\t")
+    output_path = "results/LAAJ_Agreement_Correlation_All.tsv"
+    final_summary.to_csv(output_path, index=False, sep="\t",
+                         columns=['language',
+                                  'comparison',
+                                  'criterion',
+                                  'spearman_r',
+                                  'spearman_p',
+                                  'quadratic_CohenK',
+                                  #  'ICC_2_1_absolute'
+                                  ])
 
     print(f"\n{'=' * 80}")
     print(f"Wrote all pairwise statistics to {output_path}")
