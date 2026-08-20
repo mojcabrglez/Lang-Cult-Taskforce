@@ -192,12 +192,12 @@ def correlations_per_criterion(merged_df, criteria_names):
 
         results.append({
             'criterion':   criterion,
-            'n':           len(common_idx),
+            'n_examples':           len(common_idx),
             'spearman_r':  round(spearman_r, 3),
             'spearman_p':  round(spearman_p, 4),
             'mean_a':  round(model_scores.mean(),  2),
             'mean_b': round(manual_scores.mean(), 2),
-            'mae':         round((model_scores - manual_scores).abs().mean(), 3),
+            #'mae':         round((model_scores - manual_scores).abs().mean(), 3),
         })
 
     return pd.DataFrame(results)
@@ -307,16 +307,16 @@ def agreement_scores(merged_df, criteria_names):
             "exact_agreement": round((diff == 0).mean(), 3),
             "adjacent_agreement": round((diff.abs() <= 1).mean(), 3),
 
-            "linear_CohenK": (
-                round(linear_kappa, 3) if pd.notna(linear_kappa) else np.nan
-            ),
+            #"linear_CohenK": (
+           #     round(linear_kappa, 3) if pd.notna(linear_kappa) else np.nan
+            #),
             "quadratic_CohenK": (
                 round(quadratic_kappa, 3) if pd.notna(quadratic_kappa) else np.nan
             ),
 
-            "ordinal_Krippendorff_alpha": (
-                round(ordinal_alpha, 3) if pd.notna(ordinal_alpha) else np.nan
-            ),
+            #"ordinal_Krippendorff_alpha": (
+            #    round(ordinal_alpha, 3) if pd.notna(ordinal_alpha) else np.nan
+            #),
             "ICC_2_1_absolute": (
                 round(icc_2_1, 3) if pd.notna(icc_2_1) else np.nan
             ),
@@ -408,6 +408,88 @@ def plot_krippendorff_alpha_by_language(
 
 
 
+def plot_cohen_K_by_language(
+    summary_df,
+    output_dir="results/plots",
+    alpha_col="quadratic_CohenK",
+):
+    """
+    Create one bar plot per language showing Cohen's Kappa
+    by criterion and annotator/evaluator pair.
+    """
+    os.makedirs(output_dir, exist_ok=True)
+
+    required_cols = {"language", "comparison", "criterion", alpha_col}
+    missing_cols = required_cols - set(summary_df.columns)
+
+    if missing_cols:
+        raise ValueError(f"Missing required columns: {missing_cols}")
+
+    plot_df = summary_df.copy()
+    plot_df[alpha_col] = pd.to_numeric(plot_df[alpha_col], errors="coerce")
+    plot_df = plot_df.dropna(subset=[alpha_col])
+
+    for language in sorted(plot_df["language"].unique()):
+        lang_df = plot_df[plot_df["language"] == language].copy()
+
+        criteria = list(lang_df["criterion"].drop_duplicates())
+        comparisons = list(lang_df["comparison"].drop_duplicates())
+
+        x = np.arange(len(criteria))
+        width = 0.8 / max(len(comparisons), 1)
+
+        fig, ax = plt.subplots(figsize=(10, 6))
+
+        for i, comparison in enumerate(comparisons):
+            comp_df = lang_df[lang_df["comparison"] == comparison]
+
+            values = []
+            for criterion in criteria:
+                value = comp_df.loc[
+                    comp_df["criterion"] == criterion,
+                    alpha_col,
+                ]
+
+                if len(value) == 0:
+                    values.append(np.nan)
+                else:
+                    values.append(value.iloc[0])
+
+            offset = (i - (len(comparisons) - 1) / 2) * width
+
+            ax.bar(
+                x + offset,
+                values,
+                width,
+                label=comparison,
+            )
+
+        ax.axhline(0.61, linestyle="--", linewidth=1, label="Substantial agreement κ = 0.61")
+        ax.axhline(0.81, linestyle=":", linewidth=1, label="Almost perfect agreement κ= 0.81")
+
+        ax.set_title(f"Quadratic weighed Cohen's κ by criterion — {language}, {safe_model}")
+        ax.set_xlabel("Criterion")
+        ax.set_ylabel("κ")
+        ax.set_xticks(x)
+        ax.set_xticklabels(criteria, rotation=30, ha="right")
+        ax.set_ylim(-0.05, 1.05)
+        ax.legend()
+        ax.grid(axis="y", alpha=0.3)
+
+        fig.tight_layout()
+
+        safe_language = str(language).replace(" ", "_").replace("/", "_")
+        output_path = os.path.join(
+            output_dir,
+            f"quadratic_kappa_{safe_language}.png",
+        )
+
+        fig.savefig(output_path, dpi=300, bbox_inches="tight")
+        plt.close(fig)
+
+        print(f"Wrote plot to {output_path}")
+
+
 criteria_names = ["Fluency", "Adequacy", "General_Quality"]
 
 all_summaries = []
@@ -428,7 +510,8 @@ for laaj_score in os.listdir(laaj_scores_path):
 
         if not os.path.exists(manual_scores2):
             print(f"Warning: missing manual eval 2 for {lang}: {manual_scores2}")
-            continue
+            manual_scores2 = None
+
 
         comparisons = [
             {
@@ -457,6 +540,10 @@ for laaj_score in os.listdir(laaj_scores_path):
 
         for comparison in comparisons:
             comparison_name = comparison["comparison"]
+            if comparison["file2"] == None:
+                continue
+            if comparison["file1"] == None:
+                continue
 
             merged = load_and_merge(
                 comparison["file1"],
@@ -505,8 +592,14 @@ if all_summaries:
 else:
     print("No summaries were generated.")
 
-plot_krippendorff_alpha_by_language(
+#plot_krippendorff_alpha_by_language(
+#        final_summary,
+#        output_dir="results/plots",
+#        alpha_col="ordinal_Krippendorff_alpha",
+#    )
+
+plot_cohen_K_by_language(
         final_summary,
         output_dir="results/plots",
-        alpha_col="ordinal_Krippendorff_alpha",
+        alpha_col="quadratic_CohenK",
     )

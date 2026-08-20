@@ -1,0 +1,10 @@
+language	comparison	file1	file2	criterion	n	spearman_r	spearman_p	mean_a	mean_b	mae	exact_agreement	adjacent_agreement	linear_CohenK	quadratic_CohenK	ordinal_Krippendorff_alpha	ICC_2_1_absolute
+Slovenian	human_1_vs_human_2	Manual_evaluation_Slovenian_1.xlsx	Manual_evaluation_Slovenian_2.xlsx	Adequacy	30	0.635	0.0002	2.57	2.47	0.9	0.3	0.833	0.382	0.586	0.586	0.595
+Slovenian	human_1_vs_human_2	Manual_evaluation_Slovenian_1.xlsx	Manual_evaluation_Slovenian_2.xlsx	Fluency	30	0.732	0.0	4.17	3.83	0.4	0.6	1.0	0.542	0.697	0.684	0.705
+Slovenian	human_1_vs_human_2	Manual_evaluation_Slovenian_1.xlsx	Manual_evaluation_Slovenian_2.xlsx	General_Quality	29	0.74	0.0	2.48	2.45	0.586	0.483	0.931	0.561	0.745	0.745	0.752
+Slovenian	model_vs_human_1	LAAJ_gemma3-4b-it-qat_scores_Slovenian.tsv	Manual_evaluation_Slovenian_1.xlsx	Adequacy	30	0.301	0.1055	3.0	2.57	1.233	0.3	0.633	0.206	0.257	0.237	0.263
+Slovenian	model_vs_human_1	LAAJ_gemma3-4b-it-qat_scores_Slovenian.tsv	Manual_evaluation_Slovenian_1.xlsx	Fluency	30	0.137	0.4702	3.2	4.17	1.1	0.2	0.733	0.043	0.07	-0.233	0.072
+Slovenian	model_vs_human_1	LAAJ_gemma3-4b-it-qat_scores_Slovenian.tsv	Manual_evaluation_Slovenian_1.xlsx	General_Quality	29	0.51	0.0047	3.17	2.48	1.034	0.276	0.69	0.145	0.285	0.204	0.293
+Slovenian	model_vs_human_2	LAAJ_gemma3-4b-it-qat_scores_Slovenian.tsv	Manual_evaluation_Slovenian_2.xlsx	Adequacy	30	0.402	0.0276	3.0	2.47	1.067	0.2	0.833	0.189	0.333	0.298	0.341
+Slovenian	model_vs_human_2	LAAJ_gemma3-4b-it-qat_scores_Slovenian.tsv	Manual_evaluation_Slovenian_2.xlsx	Fluency	30	0.11	0.5638	3.2	3.83	0.767	0.433	0.833	0.152	0.098	-0.058	0.101
+Slovenian	model_vs_human_2	LAAJ_gemma3-4b-it-qat_scores_Slovenian.tsv	Manual_evaluation_Slovenian_2.xlsx	General_Quality	30	0.217	0.2491	3.17	2.43	1.133	0.2	0.733	0.069	0.086	-0.042	0.089
